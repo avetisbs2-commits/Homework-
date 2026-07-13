@@ -3,7 +3,7 @@ package inheritance_homework;
 public class Truck extends Car {
     int capacity;
 
-    public Truck(int passengerCount, char engineType) {
+    Truck(int passengerCount, char engineType) {
         super(passengerCount, engineType);
     }
 

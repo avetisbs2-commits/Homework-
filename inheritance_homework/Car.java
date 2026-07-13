@@ -10,7 +10,6 @@ public class Car {
     }
 
     int getPassengerCount(){
-
         return passengerCount;
     }
 
