@@ -1,0 +1,5 @@
+*.class
+*.jar
+manifest.txt
+Calculator/
+Calculator-1.0.exe
