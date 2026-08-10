@@ -82,11 +82,11 @@ public class MyArrayList implements List<Integer> {
         }
         Integer removed = (Integer) elements[index];
         Object[] newElements = new Object[elements.length - 1];
-        // copy everything before index, unchanged
+
         for (int i = 0; i < index; i++) {
             newElements[i] = elements[i];
         }
-        // copy everything after index, shifted 1 spot to the left
+
         for (int i = index + 1; i < elements.length; i++) {
             newElements[i - 1] = elements[i];
         }
@@ -96,10 +96,9 @@ public class MyArrayList implements List<Integer> {
 
     @Override
     public boolean remove(Object o) {
-        // find where the value is, then remove it by that position
         int index = indexOf(o);
         if (index < 0) {
-            return false; // value wasn't in the list
+            return false;
         }
         remove(index);
         return true;
@@ -162,7 +161,7 @@ public class MyArrayList implements List<Integer> {
         result += "]";
         return result;
     }
-    
+
     //     NOT implemented.
 
     @Override
