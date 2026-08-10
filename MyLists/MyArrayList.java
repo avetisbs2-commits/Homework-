@@ -162,15 +162,7 @@ public class MyArrayList implements List<Integer> {
         result += "]";
         return result;
     }
-
-    // ===== iterator =====
-    // An iterator is just an object that walks through the list one
-    // element at a time. It needs to remember "where am I right now",
-    // which is what "cursor" is doing below - it starts at 0 and moves
-    // forward by 1 every time next() is called.
-
-
-
+    
     //     NOT implemented.
 
     @Override
