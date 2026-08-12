@@ -1,0 +1,450 @@
+package MyLists;
+
+import java.util.Collection;
+import java.util.ConcurrentModificationException;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
+
+public class MyLinkedList implements List {
+
+    private static class Node {
+        Object value;
+        Node next;
+
+        Node(Object value,) {
+            this.value = value;
+            this.next = next;
+        }
+    }
+
+    private Node head;
+    private int size = 0;
+
+    // ---------- basic queries ----------
+
+    @Override
+    public int size() {
+        return size;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return indexOf(o) >= 0;
+    }
+
+    // ---------- helpers ----------
+
+    private void checkIndex(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+    }
+
+    private void checkIndexForAdd(int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+    }
+
+    // walk from whichever end is closer
+    private Node nodeAt(int index) {
+        checkIndex(index);
+        Node current;
+        if (index < size / 2) {
+            current = head;
+            for (int i = 0; i < index; i++) {
+                current = current.next;
+            }
+        } else {
+            current = tail;
+            for (int i = size - 1; i > index; i--) {
+                current = current.prev;
+            }
+        }
+        return current;
+    }
+
+    private void linkLast(Integer value) {
+        Node newNode = new Node(tail, value, null);
+        if (tail == null) {
+            head = newNode; // list was empty
+        } else {
+            tail.next = newNode;
+        }
+        tail = newNode;
+        size++;
+        modCount++;
+    }
+
+    private void unlink(Node node) {
+        Node prev = node.prev;
+        Node next = node.next;
+
+        if (prev == null) {
+            head = next;
+        } else {
+            prev.next = next;
+        }
+
+        if (next == null) {
+            tail = prev;
+        } else {
+            next.prev = prev;
+        }
+
+        node.prev = null;
+        node.next = null;
+        size--;
+        modCount++;
+    }
+
+    // ---------- iteration ----------
+
+    @Override
+    public Iterator<Integer> iterator() {
+        return new Itr();
+    }
+
+    private class Itr implements Iterator<Integer> {
+        Node nextNode = head;
+        Node lastReturned = null;
+        int expectedModCount = modCount;
+
+        @Override
+        public boolean hasNext() {
+            return nextNode != null;
+        }
+
+        @Override
+        public Integer next() {
+            checkForComodification();
+            if (nextNode == null) throw new NoSuchElementException();
+            lastReturned = nextNode;
+            nextNode = nextNode.next;
+            return lastReturned.value;
+        }
+
+        @Override
+        public void remove() {
+            if (lastReturned == null) throw new IllegalStateException();
+            checkForComodification();
+            unlink(lastReturned);
+            expectedModCount = modCount;
+            lastReturned = null;
+        }
+
+        void checkForComodification() {
+            if (modCount != expectedModCount) {
+                throw new ConcurrentModificationException();
+            }
+        }
+    }
+
+    // ---------- array conversion ----------
+
+    @Override
+    public Object[] toArray() {
+        Object[] result = new Object[size];
+        int i = 0;
+        for (Node n = head; n != null; n = n.next) {
+            result[i++] = n.value;
+        }
+        return result;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T[] toArray(T[] a) {
+        if (a.length < size) {
+            a = (T[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
+        }
+        int i = 0;
+        Object[] result = a;
+        for (Node n = head; n != null; n = n.next) {
+            result[i++] = n.value;
+        }
+        if (a.length > size) {
+            a[size] = null;
+        }
+        return a;
+    }
+
+    // ---------- add / remove ----------
+
+    @Override
+    public boolean add(Integer integer) {
+        linkLast(integer);
+        return true;
+    }
+
+    @Override
+    public boolean remove(Object o) {
+        for (Node n = head; n != null; n = n.next) {
+            if (o == null ? n.value == null : o.equals(n.value)) {
+                unlink(n);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        for (Object o : c) {
+            if (!contains(o)) return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends Integer> c) {
+        return addAll(size, c);
+    }
+
+    @Override
+    public boolean addAll(int index, Collection<? extends Integer> c) {
+        checkIndexForAdd(index);
+        if (c.isEmpty()) return false;
+
+        for (Integer value : c) {
+            add(index++, value);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        boolean changed = false;
+        for (Object o : c) {
+            while (remove(o)) {
+                changed = true;
+            }
+        }
+        return changed;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        boolean changed = false;
+        Node n = head;
+        while (n != null) {
+            Node next = n.next;
+            if (!c.contains(n.value)) {
+                unlink(n);
+                changed = true;
+            }
+            n = next;
+        }
+        return changed;
+    }
+
+    @Override
+    public void clear() {
+        head = null;
+        tail = null;
+        size = 0;
+        modCount++;
+    }
+
+    // ---------- positional access ----------
+
+    @Override
+    public Integer get(int index) {
+        return nodeAt(index).value;
+    }
+
+    @Override
+    public Integer set(int index, Integer element) {
+        Node n = nodeAt(index);
+        Integer old = n.value;
+        n.value = element;
+        return old;
+    }
+
+    @Override
+    public void add(int index, Integer element) {
+        checkIndexForAdd(index);
+        if (index == size) {
+            linkLast(element);
+            return;
+        }
+        Node succ = nodeAt(index);
+        Node pred = succ.prev;
+        Node newNode = new Node(pred, element, succ);
+        succ.prev = newNode;
+        if (pred == null) {
+            head = newNode;
+        } else {
+            pred.next = newNode;
+        }
+        size++;
+        modCount++;
+    }
+
+    @Override
+    public Integer remove(int index) {
+        Node n = nodeAt(index);
+        Integer value = n.value;
+        unlink(n);
+        return value;
+    }
+
+    @Override
+    public int indexOf(Object o) {
+        int index = 0;
+        for (Node n = head; n != null; n = n.next) {
+            if (o == null ? n.value == null : o.equals(n.value)) {
+                return index;
+            }
+            index++;
+        }
+        return -1;
+    }
+
+    @Override
+    public int lastIndexOf(Object o) {
+        int index = size - 1;
+        for (Node n = tail; n != null; n = n.prev) {
+            if (o == null ? n.value == null : o.equals(n.value)) {
+                return index;
+            }
+            index--;
+        }
+        return -1;
+    }
+
+    // ---------- list iterators / sublist ----------
+
+    @Override
+    public ListIterator<Integer> listIterator() {
+        return listIterator(0);
+    }
+
+    @Override
+    public ListIterator<Integer> listIterator(int index) {
+        checkIndexForAdd(index);
+        return new ListItr(index);
+    }
+
+    private class ListItr implements ListIterator<Integer> {
+        Node lastReturned = null;
+        Node nextNode;
+        int nextIndex;
+        int expectedModCount = modCount;
+
+        ListItr(int index) {
+            nextNode = (index == size) ? null : nodeAt(index);
+            nextIndex = index;
+        }
+
+        void checkForComodification() {
+            if (modCount != expectedModCount) {
+                throw new ConcurrentModificationException();
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return nextIndex < size;
+        }
+
+        @Override
+        public Integer next() {
+            checkForComodification();
+            if (!hasNext()) throw new NoSuchElementException();
+            lastReturned = nextNode;
+            nextNode = nextNode.next;
+            nextIndex++;
+            return lastReturned.value;
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return nextIndex > 0;
+        }
+
+        @Override
+        public Integer previous() {
+            checkForComodification();
+            if (!hasPrevious()) throw new NoSuchElementException();
+            lastReturned = (nextNode == null) ? tail : nextNode.prev;
+            nextNode = lastReturned;
+            nextIndex--;
+            return lastReturned.value;
+        }
+
+        @Override
+        public int nextIndex() {
+            return nextIndex;
+        }
+
+        @Override
+        public int previousIndex() {
+            return nextIndex - 1;
+        }
+
+        @Override
+        public void set(Integer e) {
+            if (lastReturned == null) throw new IllegalStateException();
+            checkForComodification();
+            lastReturned.value = e;
+        }
+
+        @Override
+        public void add(Integer e) {
+            checkForComodification();
+            MyLinkedList.this.add(nextIndex++, e);
+            expectedModCount = modCount;
+            lastReturned = null;
+        }
+
+        @Override
+        public void remove() {
+            if (lastReturned == null) throw new IllegalStateException();
+            checkForComodification();
+            Node lastNext = lastReturned.next;
+            unlink(lastReturned);
+            if (nextNode == lastReturned) {
+                nextNode = lastNext;
+            } else {
+                nextIndex--;
+            }
+            lastReturned = null;
+            expectedModCount = modCount;
+        }
+    }
+
+    @Override
+    public List<Integer> subList(int fromIndex, int toIndex) {
+        if (fromIndex < 0 || toIndex > size || fromIndex > toIndex) {
+            throw new IndexOutOfBoundsException("fromIndex: " + fromIndex + ", toIndex: " + toIndex);
+        }
+        MyLinkedList sub = new MyLinkedList();
+        Node n = nodeAt(fromIndex);
+        for (int i = fromIndex; i < toIndex; i++) {
+            sub.add(n.value);
+            n = n.next;
+        }
+        return sub;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("[");
+        Node n = head;
+        while (n != null) {
+            sb.append(n.value);
+            if (n.next != null) sb.append(", ");
+            n = n.next;
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+}
