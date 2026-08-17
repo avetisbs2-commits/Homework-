@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple Page</title>
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 420px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+  }
+
+  h1 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 28px;
+  }
+
+  p {
+    color: #666;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  button {
+    background: #667eea;
+    color: #fff;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+  }
+
+  button:hover {
+    background: #5568d3;
+  }
+
+  button:active {
+    transform: scale(0.97);
+  }
+
+  #counter {
+    margin-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #444;
+  }
+</style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Hello there 👋</h1>
+    <p>This is a simple web page built with HTML, CSS, and JavaScript, all in a single file.</p>
+    <button id="clickBtn">Click me</button>
+    <div id="counter">Clicks: 0</div>
+  </div>
+
+  <script>
+    let count = 0;
+    const btn = document.getElementById('clickBtn');
+    const counter = document.getElementById('counter');
+
+    btn.addEventListener('click', () => {
+      count++;
+      counter.textContent = `Clicks: ${count}`;
+    });
+  </script>
+
+</body>
+</html>
