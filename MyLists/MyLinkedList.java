@@ -47,11 +47,21 @@ public class MyLinkedList implements List {
     }
     // ===== size / isEmpty =====
 
+    /**
+     * Returns the number of elements in this list.
+     *
+     * @return the number of elements
+     */
     @Override
     public int size() {
         return size;
     }
 
+    /**
+     * Checks whether this list contains no elements.
+     *
+     * @return true if the list is empty, false otherwise
+     */
     @Override
     public boolean isEmpty() {
         return size == 0;
@@ -59,6 +69,13 @@ public class MyLinkedList implements List {
 
     // ===== indexOf =====
 
+    /**
+     * Returns the index of the first occurrence of the specified value,
+     * or -1 if this list does not contain it.
+     *
+     * @param o the element to search for
+     * @return the index of the first occurrence, or -1 if not found
+     */
     @Override
     public int indexOf(Object o) {
         Node current = head;
@@ -79,6 +96,12 @@ public class MyLinkedList implements List {
 
     // ===== contains =====
 
+    /**
+     * Checks whether this list contains the specified value.
+     *
+     * @param o the element to check for
+     * @return true if this list contains the element, false otherwise
+     */
     @Override
     public boolean contains(Object o) {
         return indexOf(o) >= 0;
@@ -87,6 +110,12 @@ public class MyLinkedList implements List {
 
     // ===== add =====
 
+    /**
+     * Appends the given value to the end of this list.
+     *
+     * @param value the element to add
+     * @return true (as specified by Collection.add)
+     */
     @Override
     public boolean add(Object value) {
         Node newNode = new Node(value);
@@ -105,6 +134,9 @@ public class MyLinkedList implements List {
 
     // ===== clear =====
 
+    /**
+     * Removes all elements from this list.
+     */
     @Override
     public void clear() {
         head = null;
@@ -113,11 +145,26 @@ public class MyLinkedList implements List {
 
     // ===== get / set =====
 
+    /**
+     * Returns the element at the specified index.
+     *
+     * @param index the index of the element to return
+     * @return the element at the specified index
+     * @throws IndexOutOfBoundsException if index is out of range
+     */
     @Override
     public Object get(int index) {
         return nodeAt(index).value;
     }
 
+    /**
+     * Replaces the element at the specified index with the given value.
+     *
+     * @param index the index of the element to replace
+     * @param value the new value
+     * @return null (the previous value is not currently returned)
+     * @throws IndexOutOfBoundsException if index is out of range
+     */
     @Override
     public Object set(int index, Object value) {
         Node node = nodeAt(index);
@@ -127,6 +174,12 @@ public class MyLinkedList implements List {
 
     // ===== toString =====
 
+    /**
+     * Returns a string representation of this list, formatted as a
+     * comma-separated sequence of elements enclosed in square brackets.
+     *
+     * @return a string representation of this list
+     */
     @Override
     public String toString() {
         String result = "[";

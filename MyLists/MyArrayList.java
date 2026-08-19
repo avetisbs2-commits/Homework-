@@ -10,11 +10,21 @@ public class MyArrayList implements List<Integer> {
 
     // ===== size / isEmpty =====
 
+    /**
+     * Returns the number of elements in this list.
+     *
+     * @return the number of elements
+     */
     @Override
     public int size() {
         return elements.length;
     }
 
+    /**
+     * Checks whether this list contains no elements.
+     *
+     * @return true if the list is empty, false otherwise
+     */
     @Override
     public boolean isEmpty() {
         return elements.length == 0;
@@ -22,6 +32,12 @@ public class MyArrayList implements List<Integer> {
 
     // ===== add =====
 
+    /**
+     * Appends the given value to the end of this list.
+     *
+     * @param value the element to add
+     * @return true (as specified by Collection.add)
+     */
     @Override
     public boolean add(Integer value) {
 
@@ -34,6 +50,14 @@ public class MyArrayList implements List<Integer> {
         return true;
     }
 
+    /**
+     * Inserts the given value at the specified index, shifting
+     * any subsequent elements to the right.
+     *
+     * @param index the index at which to insert the value
+     * @param value the element to insert
+     * @throws IndexOutOfBoundsException if index is out of range
+     */
     @Override
     public void add(int index, Integer value) {
         if (index < 0 || index > elements.length) {
@@ -55,6 +79,13 @@ public class MyArrayList implements List<Integer> {
 
     // ===== get / set =====
 
+    /**
+     * Returns the element at the specified index.
+     *
+     * @param index the index of the element to return
+     * @return the element at the specified index
+     * @throws IndexOutOfBoundsException if index is out of range
+     */
     @Override
     public Integer get(int index) {
         if (index < 0 || index >= elements.length) {
@@ -63,6 +94,14 @@ public class MyArrayList implements List<Integer> {
         return (Integer) elements[index];
     }
 
+    /**
+     * Replaces the element at the specified index with the given value.
+     *
+     * @param index the index of the element to replace
+     * @param value the new value
+     * @return the element previously at the specified index
+     * @throws IndexOutOfBoundsException if index is out of range
+     */
     @Override
     public Integer set(int index, Integer value) {
         if (index < 0 || index >= elements.length) {
@@ -75,6 +114,14 @@ public class MyArrayList implements List<Integer> {
 
     // ===== remove =====
 
+    /**
+     * Removes the element at the specified index, shifting any
+     * subsequent elements to the left.
+     *
+     * @param index the index of the element to remove
+     * @return the element that was removed
+     * @throws IndexOutOfBoundsException if index is out of range
+     */
     @Override
     public Integer remove(int index) {
         if (index < 0 || index >= elements.length) {
@@ -94,6 +141,13 @@ public class MyArrayList implements List<Integer> {
         return removed;
     }
 
+    /**
+     * Removes the first occurrence of the specified value from this list,
+     * if it is present.
+     *
+     * @param o the element to remove
+     * @return true if the element was found and removed, false otherwise
+     */
     @Override
     public boolean remove(Object o) {
         int index = indexOf(o);
@@ -106,6 +160,13 @@ public class MyArrayList implements List<Integer> {
 
     // ===== indexOf / contains =====
 
+    /**
+     * Returns the index of the first occurrence of the specified value,
+     * or -1 if this list does not contain it.
+     *
+     * @param o the element to search for
+     * @return the index of the first occurrence, or -1 if not found
+     */
     @Override
     public int indexOf(Object o) {
         for (int i = 0; i < elements.length; i++) {
@@ -120,6 +181,13 @@ public class MyArrayList implements List<Integer> {
         return -1;
     }
 
+    /**
+     * Returns the index of the last occurrence of the specified value,
+     * or -1 if this list does not contain it.
+     *
+     * @param o the element to search for
+     * @return the index of the last occurrence, or -1 if not found
+     */
     @Override
     public int lastIndexOf(Object o) {
         for (int i = elements.length - 1; i >= 0; i--) {
@@ -134,6 +202,12 @@ public class MyArrayList implements List<Integer> {
         return -1;
     }
 
+    /**
+     * Checks whether this list contains the specified value.
+     *
+     * @param o the element to check for
+     * @return true if this list contains the element, false otherwise
+     */
     @Override
     public boolean contains(Object o) {
         return indexOf(o) >= 0;
@@ -142,6 +216,9 @@ public class MyArrayList implements List<Integer> {
 
     // ===== clear =====
 
+    /**
+     * Removes all elements from this list.
+     */
     @Override
     public void clear() {
         elements = new Object[0];
@@ -149,6 +226,12 @@ public class MyArrayList implements List<Integer> {
 
     // ===== toString =====
 
+    /**
+     * Returns a string representation of this list, formatted as a
+     * comma-separated sequence of elements enclosed in square brackets.
+     *
+     * @return a string representation of this list
+     */
     @Override
     public String toString() {
         String result = "[";
@@ -178,7 +261,6 @@ public class MyArrayList implements List<Integer> {
     public <T> T[] toArray(T[] a) {
         return null;
     }
-
 
     @Override
     public boolean containsAll(Collection<?> c) {
