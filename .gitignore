@@ -1,0 +1,88 @@
+# =================(
+# Java & General
+# =================(
+*.class
+*.log
+*.ctxt
+.mtj.tmp/
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+hs_err_pid*.log
+
+# =================(
+# Build Tools
+# =================(
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+pom.xml.bak
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.properties
+
+# Gradle
+.gradle/
+build/
+!**/src/**/build/
+gradle-app.setting
+.gradletasknamecache
+# Keep Gradle wrapper jar so others can build without installing gradle
+!gradle-wrapper.jar
+
+# =================(
+# IDEs & Editors
+# =================(
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Eclipse
+.metadata/
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~
+.settings/
+.loadpath
+.project
+.classpath
+.factorypath
+
+# Visual Studio Code
+.vscode/
+
+# =================(
+# Operating Systems
+# =================(
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+.Trash-*
